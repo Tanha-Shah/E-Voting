@@ -87,7 +87,7 @@ public class admin implements ActionListener {
         b2 = new JButton("Add Candidate");
         b3 = new JButton("Add");
         b2.setBounds(65, 510, 160, 40);
-        
+
         b1.addActionListener(this);
         b2.addActionListener(this);
         b3.addActionListener(this);
@@ -151,20 +151,17 @@ public class admin implements ActionListener {
                     String fname = rs.getString(2);
                     String sname = rs.getString(3);
                     String cid = rs.getString(1);
-                    String p=rs.getString(4);
+                    String p = rs.getString(4);
                     String name = "[" + cid + "]. " + fname + " " + sname;
                     Party par = null;
-                    if("BJP".equals(p))
-                    {
-                        
+                    if ("BJP".equals(p)) {
+
                         System.out.println("tanha");
-                        par=new Party(name,"/bjp.jpe"); 
+                        par = new Party(name, "/bjp.jpe");
+                    } else if ("Congress".equals(p)) {
+                        par = new Party(name, "/congress.png");
                     }
-                    else if("Congress".equals(p))
-                    {
-                        par=new Party(name,"/congress.png");
-                    }
-                    
+
                     DefaultMutableTreeNode t2 = new DefaultMutableTreeNode(par);
                     ward[j].add(t2);
                 }
@@ -181,8 +178,8 @@ public class admin implements ActionListener {
                     if (SwingUtilities.isRightMouseButton(me)) {
                         TreePath path = tree.getPathForLocation(me.getX(), me.getY());
                         Rectangle pathBounds = tree.getUI().getPathBounds(tree, path);
-                        DefaultMutableTreeNode n=(DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
-                        if (n.getLevel()==2) {
+                        DefaultMutableTreeNode n = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+                        if (n.getLevel() == 2) {
                             menu.add(edit);
                             menu.add(remove);
                             menu.show(tree, pathBounds.x, pathBounds.y + pathBounds.height);
@@ -233,14 +230,14 @@ public class admin implements ActionListener {
                             jt4.setText(wardno);
                             jt5.setText(party);
                             jt6.setText(info);
-                            
+
                             jt1.setEditable(false);
                             jt2.setEditable(false);
                             jt3.setEditable(false);
                             jt4.setEditable(false);
                             jt5.setEditable(false);
-                            jt6.setEditable(false);                            
-                            
+                            jt6.setEditable(false);
+
                             l1.setBounds(0, 0, 200, 50);
                             jt1.setBounds(300, 0, 200, 50);
                             l2.setBounds(0, 100, 200, 50);
@@ -381,55 +378,56 @@ public class admin implements ActionListener {
     }
 
 }
- class PartyTreeCellRenderer implements TreeCellRenderer {
-        private JLabel label;
 
-        PartyTreeCellRenderer() {
-            label = new JLabel();
-        }
+class PartyTreeCellRenderer implements TreeCellRenderer {
 
-        public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
-                                                      boolean leaf, int row, boolean hasFocus) {
-            Object o = ((DefaultMutableTreeNode) value).getUserObject();
-            if (o instanceof Party) {
-                Party p = (Party) o;
-                URL imageUrl = getClass().getResource(p.getPartyIcon());
-                if (imageUrl != null) {
-                    label.setIcon(new ImageIcon(imageUrl));
-                }
-                label.setText(p.getName());
-            } else {
-                label.setIcon(null);
-                label.setText("" + value);
+    private JLabel label;
+
+    PartyTreeCellRenderer() {
+        label = new JLabel();
+    }
+
+    public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
+            boolean leaf, int row, boolean hasFocus) {
+        Object o = ((DefaultMutableTreeNode) value).getUserObject();
+        if (o instanceof Party) {
+            Party p = (Party) o;
+            URL imageUrl = getClass().getResource(p.getPartyIcon());
+            if (imageUrl != null) {
+                label.setIcon(new ImageIcon(imageUrl));
             }
-            return label;
+            label.setText(p.getName());
+        } else {
+            label.setIcon(null);
+            label.setText("" + value);
         }
+        return label;
+    }
+}
+
+class Party {
+
+    private String name;
+    private String PartyIcon;
+
+    Party(String name, String partyIcon) {
+        this.name = name;
+        this.PartyIcon = partyIcon;
     }
 
-    class Party {
-        private String name;
-        private String PartyIcon;
-
-        Party(String name, String partyIcon) {
-            this.name = name;
-            this.PartyIcon = partyIcon;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getPartyIcon() {
-            return PartyIcon;
-        }
-
-        public void setPartyIcon(String flagIcon) {
-            this.PartyIcon = flagIcon;
-        }
+    public String getName() {
+        return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public String getPartyIcon() {
+        return PartyIcon;
+    }
+
+    public void setPartyIcon(String flagIcon) {
+        this.PartyIcon = flagIcon;
+    }
+}
